@@ -7,9 +7,14 @@ using Microsoft.Extensions.Logging;
 
 namespace MyGeotabHelper
 {
-    public class Helper
+    /// <summary>
+    /// MyGeotab Helper methods.
+    /// </summary>
+    public static class MyGHelpers
     {
-        private readonly ILogger<Helper> _logger;
+        public static ILogger _logger;
+
+        public static void AttachLogger(ILogger logger) => _logger = logger;
 
         /// <summary>
         /// Gets a list of <see cref="ZoneType"/>s from a list of zone type names.
@@ -17,7 +22,7 @@ namespace MyGeotabHelper
         /// <param name="api">An initiated instance of the MyGeotab <see cref="API"/> interface.</param>
         /// <param name="zoneTypeNames">A list of <see cref="ZoneType"/> names.</param>
         /// <returns>A list of <see cref="ZoneType"/> entities.</returns>
-        public async Task<List<ZoneType>> GetZoneTypeListByNamesAsync(API api, List<string> zoneTypeNames)
+        public static async Task<List<ZoneType>> GetZoneTypeListByNamesAsync(API api, List<string> zoneTypeNames)
         {
             _logger.LogDebug("Executing GetZoneTypeListByNamesAsync...");
 
@@ -40,7 +45,7 @@ namespace MyGeotabHelper
         /// <param name="api">An initiated instance of the MyGeotab <see cref="API"/> interface.</param>
         /// <param name="groupNames">The list of group names.</param>
         /// <returns>A list of <see cref="Group"/> entities.</returns>
-        public async Task<List<Group>> GetGroupListByNamesAsync(API api, List<string> groupNames)
+        public static async Task<List<Group>> GetGroupListByNamesAsync(API api, List<string> groupNames)
         {
             _logger.LogDebug("Executing GetGroupListByNamesAsync...");
 
@@ -63,7 +68,7 @@ namespace MyGeotabHelper
         /// <param name="api">An initiated instance of the MyGeotab <see cref="API"/> interface.</param>
         /// <param name="id">The device id to look for.</param>
         /// <returns>A device if found.</returns>
-        public async Task<Device> GetDeviceByIdAsync(API api, Id id)
+        public static async Task<Device> GetDeviceByIdAsync(API api, Id id)
         {
             if (api is null)
             {
@@ -91,8 +96,8 @@ namespace MyGeotabHelper
         /// <param name="api">An initiated instance of the MyGeotab <see cref="API"/> interface.</param>
         /// <param name="device">A <see cref="Device"/>.</param>
         /// <param name="groups">A list of <see cref="Group"/> entities.</param>
-        /// <returns>An async task.</returns>
-        public async Task AddGroupsToDeviceAsync(API api, Device device, List<Group> groups)
+        /// <returns>An static async task.</returns>
+        public static async Task AddGroupsToDeviceAsync(API api, Device device, List<Group> groups)
         {
             _logger.LogDebug("Executing AddGroupsToDeviceAsync...");
 
@@ -123,8 +128,8 @@ namespace MyGeotabHelper
         /// <param name="api">An initiated instance of the MyGeotab <see cref="API"/> interface.</param>
         /// <param name="device">The device to receive the group.</param>
         /// <param name="group">The group to be added.</param>
-        /// <returns>An async task.</returns>
-        public async Task AddGroupToDeviceAsync(API api, Device device, Group group)
+        /// <returns>An static async task.</returns>
+        public static async Task AddGroupToDeviceAsync(API api, Device device, Group group)
         {
             _logger.LogDebug("Executing AddGroupToDeviceAsync...");
 
@@ -152,7 +157,7 @@ namespace MyGeotabHelper
         /// <param name="api">An initiated instance of the MyGeotab <see cref="API"/> interface.</param>
         /// <param name="group">The <see cref="Group"/> filter argument.</param>
         /// <returns>A list of <see cref="DeviceStatusInfo"/> objects.</returns>
-        public async Task<List<DeviceStatusInfo>> GetDeviceStatusInfoListByGroupAsync(API api, Group group)
+        public static async Task<List<DeviceStatusInfo>> GetDeviceStatusInfoListByGroupAsync(API api, Group group)
         {
             _logger.LogDebug("Executing GetDeviceStatusInfoListByGroupAsync...");
 
@@ -185,7 +190,7 @@ namespace MyGeotabHelper
         /// <param name="api">An initiated instance of the MyGeotab <see cref="API"/> interface.</param>
         /// <param name="name">The <see cref="ZoneType"/> name.</param>
         /// <returns>A List of <see cref="ZoneType"/> objects.</returns>
-        public async Task<List<ZoneType>> GetZoneTypesByName(API api, string name)
+        public static async Task<List<ZoneType>> GetZoneTypesByName(API api, string name)
         {
             _logger.LogDebug("Executing GetZoneTypesByName...");
 
@@ -212,7 +217,7 @@ namespace MyGeotabHelper
         /// <param name="api">An initiated instance of the MyGeotab <see cref="API"/> interface.</param>
         /// <param name="zoneTypes">A List of <see cref="ZoneType"/> objects to filter by.</param>
         /// <returns>A list of <see cref="Zone"/> objects.</returns>
-        public async Task<List<Zone>> GetZonesByZoneType(API api, List<ZoneType> zoneTypes)
+        public static async Task<List<Zone>> GetZonesByZoneType(API api, List<ZoneType> zoneTypes)
         {
             _logger.LogDebug("Executing GetZonesOfZoneType...");
 
@@ -243,7 +248,7 @@ namespace MyGeotabHelper
         /// </summary>
         /// <param name="api">An initiated instance of the MyGeotab <see cref="API"/> interface.</param>
         /// <returns>A list of <see cref="Zone"/> objects.</returns>
-        public async Task<List<Zone>> GetZones(API api)
+        public static async Task<List<Zone>> GetZones(API api)
         {
             _logger.LogDebug("Executing GetZones...");
             List<Zone> zones = await api.CallAsync<List<Zone>>("Get", typeof(Zone));
@@ -256,7 +261,7 @@ namespace MyGeotabHelper
         /// <param name="api">An initiated instance of the MyGeotab <see cref="API"/> interface.</param>
         /// <param name="deviceStatusInfo">The <see cref="DeviceStatusInfo"/> object to act on.</param>
         /// <returns>A <see cref="ReverseGeocodeAddress"/> object.</returns>
-        public async Task<ReverseGeocodeAddress> GetAddressesAsync(API api, DeviceStatusInfo deviceStatusInfo)
+        public static async Task<ReverseGeocodeAddress> GetAddressesAsync(API api, DeviceStatusInfo deviceStatusInfo)
         {
             _logger.LogDebug("Executing GetAddressesAsync...");
 
@@ -277,7 +282,7 @@ namespace MyGeotabHelper
         /// <param name="api">An initiated instance of the MyGeotab <see cref="API"/> interface.</param>
         /// <param name="group">The <see cref="Group"/> to filter devices by.</param>
         /// <returns>A list of devices related to the group passed in.</returns>
-        public async Task<List<Device>> GetDevicesByGroupAsync(API api, Group group)
+        public static async Task<List<Device>> GetDevicesByGroupAsync(API api, Group group)
         {
             _logger.LogDebug("Executing GetDevicesByGroupAsync...");
 
@@ -306,7 +311,7 @@ namespace MyGeotabHelper
         /// <param name="api">An initiated instance of the MyGeotab <see cref="API"/> interface.</param>
         /// <param name="name">The textual group name.</param>
         /// <returns>The group if found or null if not.</returns>
-        public async Task<Group> GetGroupByNameAsync(API api, string name)
+        public static async Task<Group> GetGroupByNameAsync(API api, string name)
         {
             _logger.LogDebug("Executing GetGroupByNameAsync...");
 
