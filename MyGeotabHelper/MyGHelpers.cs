@@ -86,17 +86,18 @@ namespace MyGeotabHelper
             {
                 Id = id
             };
-            List<Device> devices = await api.CallAsync<List<Device>>("Get", typeof(Device), new { search = search });
+            List<Device> devices = await api.CallAsync<List<Device>>("Get", typeof(Device), new { search });
             return devices[0];
         }
 
         /// <summary>
         /// Adds the <see cref="Group"/> entity list to the <see cref="Device"/>.
         /// </summary>
-        /// <param name="api">An initiated instance of the MyGeotab <see cref="API"/> interface.</param>
+        /// <param name="api">An initiated instance of the MyGeotab <see cref="API"/>.</param>
         /// <param name="device">A <see cref="Device"/>.</param>
         /// <param name="groups">A list of <see cref="Group"/> entities.</param>
-        /// <returns>An static async task.</returns>
+        /// <returns>An async task.</returns>
+        /// <exception cref="ArgumentNullException"></exception>
         public static async Task AddGroupsToDeviceAsync(API api, Device device, List<Group> groups)
         {
             _logger.LogDebug("Executing AddGroupsToDeviceAsync...");
@@ -111,14 +112,58 @@ namespace MyGeotabHelper
                 throw new ArgumentNullException(nameof(groups));
             }
 
+            int deviceGroupCountBefore = device.Groups.Count;
+
             foreach (Group group in groups)
             {
                 if (!device.Groups.Contains(group))
                 {
-                    IList<Group> existingGroups = device.Groups;
                     device.Groups.Add(group);
-                    var output = await api.CallAsync<Device>("Set", typeof(Device), new { entity = device });
+                    //var output = await api.CallAsync<Device>("Set", typeof(Device), new { entity = device });
                 }
+            }
+            if (deviceGroupCountBefore != device.Groups.Count)
+            {
+                // device group count has changed therefore update 
+                var output = await api.CallAsync<Device>("Set", typeof(Device), new { entity = device });
+            }
+        }
+
+        /// <summary>
+        /// Removes the <see cref="Group"/> entity list from the <see cref="Device"/>.
+        /// </summary>
+        /// <param name="api">An initiated instance of the MyGeotab <see cref="API"/>.</param>
+        /// <param name="device">A <see cref="Device"/>.</param>
+        /// <param name="groups">A list of <see cref="Group"/> entities.</param>
+        /// <returns>An async task.</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public static async Task RemoveGroupsFromDeviceAsync(API api, Device device, List<Group> groups)
+        {
+            _logger.LogDebug("Executing AddGroupsToDeviceAsync...");
+
+            if (device is null)
+            {
+                throw new ArgumentNullException(nameof(device));
+            }
+
+            if (groups is null)
+            {
+                throw new ArgumentNullException(nameof(groups));
+            }
+
+            int deviceGroupCountBefore = device.Groups.Count;
+
+            foreach (Group group in groups)
+            {
+                if (device.Groups.Contains(group))
+                {
+                    device.Groups.Remove(group);
+                }
+            }
+            if(deviceGroupCountBefore != device.Groups.Count)
+            {
+                // device group count has changed therefore update 
+                var output = await api.CallAsync<Device>("Set", typeof(Device), new { entity = device });
             }
         }
 

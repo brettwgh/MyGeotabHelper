@@ -10,8 +10,13 @@
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <FileVersion>1.0.0.0</FileVersion>
-	<Version>1.0.1-alpha1</Version>
+	<Version>1.0.3-alpha1</Version>
+	<PackageProjectUrl>https://github.com/brettwgh/MyGeotabHelper</PackageProjectUrl>
   </PropertyGroup>
+
+	<PropertyGroup>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	</PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Geotab.Checkmate.ObjectModel" Version="8.0.0" />
