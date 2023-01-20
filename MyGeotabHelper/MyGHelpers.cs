@@ -124,8 +124,15 @@ namespace MyGeotabHelper
             }
             if (deviceGroupCountBefore != device.Groups.Count)
             {
-                // device group count has changed therefore update 
-                var output = await api.CallAsync<Device>("Set", typeof(Device), new { entity = device });
+                try
+                { 
+                    // device group count has changed therefore update 
+                    var output = await api.CallAsync<Device>("Set", typeof(Device), new { entity = device });
+                }
+                catch (GroupRelationViolatedException grve)
+                {
+                    Console.WriteLine(grve.Message);
+                }
             }
         }
 
@@ -367,7 +374,8 @@ namespace MyGeotabHelper
 
             var groupSearch = new GroupSearch
             {
-                Name = name
+                Name = name,
+                IncludeAllTrees = true
             };
             List<Group> groups = await api.CallAsync<List<Group>>("Get", typeof(Group), new { search = groupSearch });
             if (groups.Count == 0)
