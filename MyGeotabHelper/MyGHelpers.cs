@@ -205,6 +205,7 @@ namespace MyGeotabHelper
 
         /// <summary>
         /// Gets a list of <see cref="DeviceStatusInfo"/> objects filtered by the <see cref="Group"/> argument.
+        /// Only currently active (non-archived) devices are included.
         /// </summary>
         /// <param name="api">An initiated instance of the MyGeotab <see cref="API"/> interface.</param>
         /// <param name="group">The <see cref="Group"/> filter argument.</param>
@@ -227,10 +228,11 @@ namespace MyGeotabHelper
             var deviceSearch = new DeviceSearch
             {
                 Groups = groupSearches,
+                FromDate = DateTime.UtcNow
             };
             DeviceStatusInfoSearch deviceStatusInfoSearch = new DeviceStatusInfoSearch
             {
-                DeviceSearch = deviceSearch,
+                DeviceSearch = deviceSearch
             };
             List<DeviceStatusInfo> deviceStatusInfoList = await api.CallAsync<List<DeviceStatusInfo>>("Get", typeof(DeviceStatusInfo), new { search = deviceStatusInfoSearch });
             return deviceStatusInfoList;
