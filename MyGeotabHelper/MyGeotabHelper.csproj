@@ -8,9 +8,9 @@
     <Description>Library that provides wrapper methods for the Geotab.Checkmat.ObjectModel.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <FileVersion>1.0.0.0</FileVersion>
-	<Version>1.0.3-alpha1</Version>
+    <AssemblyVersion>1.0.4.0</AssemblyVersion>
+    <FileVersion>1.0.4.0</FileVersion>
+	<Version>1.0.4-alpha1</Version>
 	<PackageProjectUrl>https://github.com/brettwgh/MyGeotabHelper</PackageProjectUrl>
   </PropertyGroup>
 
